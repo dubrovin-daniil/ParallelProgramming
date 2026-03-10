@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ParallelPractise/ParallelPractise.csproj" />
+  <Project Path="ParallelProgramming/ParallelProgramming.csproj" />
+</Solution>
