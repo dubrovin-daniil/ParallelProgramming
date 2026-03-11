@@ -72,9 +72,9 @@
             FileExtension.AutoSize = true;
             FileExtension.Location = new Point(694, 53);
             FileExtension.Name = "FileExtension";
-            FileExtension.Size = new Size(79, 15);
+            FileExtension.Size = new Size(99, 15);
             FileExtension.TabIndex = 3;
-            FileExtension.Text = "File Extension";
+            FileExtension.Text = "File Extension(*.*)";
             // 
             // btnNotParallel
             // 

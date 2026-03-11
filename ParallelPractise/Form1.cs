@@ -18,20 +18,30 @@ namespace ParallelPractise
         {
             btnNotParallel.Enabled = false;
 
-            Stopwatch sw = Stopwatch.StartNew();
-            int filesCount = 0;
-            if (Directory.Exists(tbPath.Text))
+            try
             {
-                string[] files = Directory.GetFiles(tbPath.Text, tbExtension.Text, SearchOption.AllDirectories);
+                Stopwatch sw = Stopwatch.StartNew();
+                int filesCount = 0;
 
-                foreach (string file in files)
+                if (Directory.Exists(tbPath.Text))
                 {
-                    filesCount++;
-                }
-            }
-            sw.Stop();
+                    string[] files = Directory.GetFiles(tbPath.Text, tbExtension.Text, SearchOption.AllDirectories);
 
-            rtbConsole.AppendText($"NotParalel -- Files count: {filesCount}. Time: {sw.ElapsedMilliseconds} ms.\n");
+                    foreach (string file in files)
+                    {
+                        filesCount++;
+                    }
+                }
+                sw.Stop();
+
+                rtbConsole.AppendText($"NotParalel -- Files count: {filesCount}. Time: {sw.ElapsedMilliseconds} ms.\n");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}\n");
+                btnNotParallel.Enabled = true;
+            }
+
             btnNotParallel.Enabled = true;
         }
 
@@ -39,22 +49,30 @@ namespace ParallelPractise
         {
             btnParallel.Enabled = false;
 
-            Stopwatch sw = Stopwatch.StartNew();
-            int filesCount = 0;
-            if (Directory.Exists(tbPath.Text))
+            try
             {
-                string[] files = Directory.GetFiles(tbPath.Text, tbExtension.Text, SearchOption.AllDirectories);
+                Stopwatch sw = Stopwatch.StartNew();
+                int filesCount = 0;
+                if (Directory.Exists(tbPath.Text))
+                {
+                    string[] files = Directory.GetFiles(tbPath.Text, tbExtension.Text, SearchOption.AllDirectories);
 
-                Parallel.ForEach<int, int>(files, () => 0,
-                    (file, loopState, subtotal) =>
-                    {
-                        subtotal++;
-                        return subtotal;
-                    }, subtotal => Interlocked.Add(ref filesCount, subtotal));
+                    Parallel.ForEach<string, int>(files, () => 0,
+                        (file, loopState, subtotal) =>
+                        {
+                            subtotal++;
+                            return subtotal;
+                        }, subtotal => Interlocked.Add(ref filesCount, subtotal));
+                }
+                sw.Stop();
+
+                rtbConsole.AppendText($"Paralel -- Files count: {filesCount}. Time: {sw.ElapsedMilliseconds} ms.\n");
             }
-            sw.Stop();
-
-            rtbConsole.AppendText($"Paralel -- Files count: {filesCount}. Time: {sw.ElapsedMilliseconds} ms.\n");
+            catch (Exception ex) 
+            {
+                MessageBox.Show($"Error: {ex.Message}\n");
+                btnNotParallel.Enabled = true;
+            }
             btnParallel.Enabled = true;
         }
     }
